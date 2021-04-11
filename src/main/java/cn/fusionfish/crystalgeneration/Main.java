@@ -16,6 +16,8 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
         Bukkit.getPluginManager().registerEvents(new PistonListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChunkLoadListener(), this);
+
+        //TODO 配置文件
     }
 
     public static Main getInstance() {

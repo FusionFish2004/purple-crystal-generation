@@ -24,13 +24,6 @@ public class CrystalGenerator {
     public static final String GENERATE_WORLD_NAME = "world";
     private Set<Player> candidates;
 
-    public void updateCandidates() {
-        candidates = Bukkit.getOnlinePlayers().stream()
-                .filter(player -> player.getWorld().getName().equalsIgnoreCase(GENERATE_WORLD_NAME))  //过滤掉不在指定世界的玩家
-                .filter(player -> player.getLocation().getBlockY() <= GENERATE_THRESHOLD_Y)  //过滤掉在某个Y值以上的玩家
-                .collect(Collectors.toSet());
-    }
-
     /**
      * 在指定位置生成一个水晶
      * @param location 目标位置
