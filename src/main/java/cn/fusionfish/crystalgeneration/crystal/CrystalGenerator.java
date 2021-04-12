@@ -8,10 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Player;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,7 +20,6 @@ public class CrystalGenerator {
     public static final int GENERATE_THRESHOLD_Y = 11;
     public static final int GENERATE_THRESHOLD_CHUNK_AMOUNT = 10;
     public static final String GENERATE_WORLD_NAME = "world";
-    private Set<Player> candidates;
 
     /**
      * 在指定位置生成一个水晶
