@@ -16,6 +16,7 @@ public class CrystalGenerator {
     public static final int GENERATE_THRESHOLD_Y = 11;
     public static final int GENERATE_THRESHOLD_CHUNK_AMOUNT = 10;
     public static final String GENERATE_WORLD_NAME = "world";
+    public static final BlockData STONE_BLOCK_DATA = Bukkit.createBlockData(Material.STONE);
 
     /**
      * 在指定位置生成一个水晶
@@ -74,12 +75,13 @@ public class CrystalGenerator {
 
         int crystalNum = 0;  //生成成功水晶的数量
         while (crystalNum < GENERATE_THRESHOLD_CHUNK_AMOUNT) {
+            if (!chunk.contains(STONE_BLOCK_DATA)) return;  //若区块内所有石头都被替换则返回
             int x = random.nextInt(16);  //产生随机位置
             int z = random.nextInt(16);
             int y = random.nextInt(GENERATE_THRESHOLD_Y);
             Block block = chunk.getBlock(x,y,z);
             if (isAvailable(block)) {
-                generateCrystal(block.getLocation());
+                generateCrystal(block.getLocation());  //生成水晶
                 crystalNum ++;
             }
         }
