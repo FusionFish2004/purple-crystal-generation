@@ -1,15 +1,11 @@
 package cn.fusionfish.crystalgeneration.crystal;
 
-import cn.fusionfish.crystalgeneration.Main;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,6 +23,14 @@ public class CrystalGenerator {
      */
     public static void generateCrystal(Location location) {
         Block block = location.getBlock();
+        generateCrystal(block);
+    }
+
+    /**
+     * 在指定方块位置生成水晶
+     * @param block 目标方块
+     */
+    public static void generateCrystal(Block block) {
         block.setBlockData(CRYSTAL_BLOCK_DATA);
     }
 
@@ -35,6 +39,7 @@ public class CrystalGenerator {
      * @param chunk 目标区块
      * @return 有效位置集合
      */
+    @Deprecated
     protected static Set<Location> getAvailableLocations(Chunk chunk) {
         return CrystalManager.getAllInArea(chunk).stream()
                 .filter(location -> location.getBlock().getType() == Material.STONE)  //生成时将石头替换为矿物
@@ -53,6 +58,7 @@ public class CrystalGenerator {
      * @param chunk 目标区块
      */
     public static void generateCrystal(Chunk chunk) {
+        /*
         Set<Location> bufferLocations = new HashSet<>(getAvailableLocations(chunk));
         if (bufferLocations.isEmpty()) return;
         for (int i = 0; i <= GENERATE_THRESHOLD_CHUNK_AMOUNT; i++) {
@@ -62,6 +68,30 @@ public class CrystalGenerator {
             generateCrystal(location);
         }
         Main.getInstance().getLogger().info("Crystal generated at chunk[" + chunk.getX() + "," + chunk.getZ() + "]");
+         */
+        World world = chunk.getWorld();
+        Random random = new Random(world.getSeed());
+
+        int crystalNum = 0;  //生成成功水晶的数量
+        while (crystalNum < GENERATE_THRESHOLD_CHUNK_AMOUNT) {
+            int x = random.nextInt(16);  //产生随机位置
+            int z = random.nextInt(16);
+            int y = random.nextInt(GENERATE_THRESHOLD_Y);
+            Block block = chunk.getBlock(x,y,z);
+            if (isAvailable(block)) {
+                generateCrystal(block.getLocation());
+                crystalNum ++;
+            }
+        }
+    }
+
+    /**
+     * 检测方块是否符合要求
+     * @param block 目标方块
+     * @return 是否符合
+     */
+    protected static boolean isAvailable(Block block) {
+        return (block.getType() == Material.STONE);
     }
 
     /**
